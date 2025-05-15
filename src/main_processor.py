@@ -2,7 +2,7 @@ import asyncio
 import time # For timer
 from pathlib import Path # For path operations
 from google.genai import types # For types.Part
-
+from schema import InvoiceSchema
 
 from ai_client import client
 from config import MODEL_NAME, INPUT_FOLDER, OUTPUT_FOLDER, data_extraction_prompt
@@ -14,8 +14,11 @@ async def extract_data_from_pdf(filepath: Path, current_client, current_model_na
         pdf_bytes = filepath.read_bytes()
         response = await current_client.aio.models.generate_content(
             model=current_model_name,
+            
             config=types.GenerateContentConfig(
-            thinking_config=types.ThinkingConfig(thinking_budget=0)
+            thinking_config=types.ThinkingConfig(thinking_budget=0),
+            response_schema=InvoiceSchema,
+            response_mime_type="application/json"
             ),
             contents=[
                 types.Part.from_bytes( # or types.Part.from_data
