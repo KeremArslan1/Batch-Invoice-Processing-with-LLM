@@ -1,0 +1,39 @@
+{
+  "invoice_metadata": {
+    "issue_date": "2012-03-06",
+    "order_id": "CA-2012-AB10015140-40974",
+    "document_type": "INVOICE",
+    "description": "This is an invoice with invoice number 36259, order ID CA-2012-AB10015140-40974, issued on 2012-03-06. The total amount due is $58.11."
+  },
+  "seller_details": {
+    "name": "SuperStore"
+  },
+  "customer_details": {
+    "bill_to.name": "Aaron Bergman",
+    "ship_to.city": "Seattle",
+    "ship_to.region": "Washington",
+    "ship_to.country": "United States"
+  },
+  "shipping_details": {
+    "ship_mode": "First Class",
+    "shipping_cost": 4.29
+  },
+  "financials": {
+    "subtotal": 53.82,
+    "discount_percentage": null,
+    "discount_price": null,
+    "shipping_total": 4.29,
+    "total_amount_due": 58.11,
+    "line_items": [
+      {
+        "description": "Newell 330 Art, Office Supplies, OFF-AR-5309",
+        "quantity": 3,
+        "unit_price": 17.94,
+        "item_total": 53.82
+      }
+    ]
+  },
+  "additional_info": {
+    "additional_info_json_string": "{\"Notes\": \"Thanks for your business!\"}"
+  }
+}

@@ -3,7 +3,6 @@ import time # For timer
 from pathlib import Path # For path operations
 from google.genai import types # For types.Part
 from schema import InvoiceSchema
-
 from ai_client import client
 from config import MODEL_NAME, INPUT_FOLDER, OUTPUT_FOLDER, data_extraction_prompt
 
@@ -14,7 +13,6 @@ async def extract_data_from_pdf(filepath: Path, current_client, current_model_na
         pdf_bytes = filepath.read_bytes()
         response = await current_client.aio.models.generate_content(
             model=current_model_name,
-            
             config=types.GenerateContentConfig(
             thinking_config=types.ThinkingConfig(thinking_budget=0),
             response_schema=InvoiceSchema,
@@ -53,7 +51,6 @@ async def main_async_processing():
         return
 
     start_time = time.perf_counter()
-
     input_path = Path(INPUT_FOLDER)
     output_path = Path(OUTPUT_FOLDER)
 
@@ -117,6 +114,4 @@ async def main_async_processing():
     print(f"Total processing time: {duration:.2f} seconds.")
 
 if __name__ == "__main__":
-    # This is the standard way to run an asyncio program from a script.
-    # main_processor.py
     asyncio.run(main_async_processing())
