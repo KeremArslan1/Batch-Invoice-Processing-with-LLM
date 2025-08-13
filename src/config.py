@@ -1,5 +1,5 @@
 import pathlib
-MODEL_NAME = "gemini-2.5-flash-preview-04-17"
+MODEL_NAME = "gemini-2.5-flash"
 
 current_directory = pathlib.Path.cwd()
 INPUT_FOLDER = current_directory / "input_files"
