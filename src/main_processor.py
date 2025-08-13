@@ -14,12 +14,13 @@ async def extract_data_from_pdf(filepath: Path, current_client, current_model_na
         response = await current_client.aio.models.generate_content(
             model=current_model_name,
             config=types.GenerateContentConfig(
+            temperature=0.1,    
             thinking_config=types.ThinkingConfig(thinking_budget=0),
             response_schema=InvoiceSchema,
             response_mime_type="application/json"
             ),
             contents=[
-                types.Part.from_bytes( # or types.Part.from_data
+                types.Part.from_bytes(
                     data=pdf_bytes,
                     mime_type='application/pdf',
                 ),
