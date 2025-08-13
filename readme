@@ -1,0 +1,148 @@
+## Overview
+
+This project processes PDF invoices in parallel using Google's Gemini 2.5 Flash model to extract structured data according to a predefined schema. The system converts unstructured invoice PDFs into standardized JSON format, making invoice data easily accessible for further processing or analysis.
+
+## Features
+
+- **Asynchronous Processing**: Processes multiple PDF invoices simultaneously for improved performance
+- **Structured Data Extraction**: Uses Pydantic models to ensure consistent JSON output format
+- **Google Gemini Integration**: Leverages Google's advanced LLM for accurate invoice data extraction
+- **Error Handling**: Comprehensive error handling with detailed logging
+- **Flexible Schema**: Configurable data schema supporting various invoice formats
+
+## Project Structure
+
+```
+.
+├── .env                    # Environment variables (API keys)
+├── readme                  # This documentation file
+├── input_files/           # Directory for input PDF invoices
+├── output_data/           # Directory for extracted JSON data
+├── myenv/                 # Python virtual environment
+└── src/                   # Source code
+    ├── main_processor.py   # Main processing logic
+    ├── ai_client.py       # Google Gemini API client
+    ├── config.py          # Configuration settings
+    └── schema.py          # Pydantic data models
+```
+
+## Installation
+
+1. **Clone the repository** and navigate to the project directory
+
+2. **Set up virtual environment** (already created as myenv)
+   ```bash
+   # On Windows
+   myenv\Scripts\activate
+   
+   # On macOS/Linux
+   source myenv/bin/activate
+   ```
+
+3. **Install dependencies** (if not already installed)
+   ```bash
+   pip install google-genai pydantic python-dotenv
+   ```
+
+4. **Configure environment variables**
+   - Update .env with your Google Gemini API key:
+   ```
+   GEMINI_API_KEY="your_api_key_here"
+   ```
+
+## Usage
+
+1. **Place PDF invoices** in the input_files directory
+
+2. **Run the processor**:
+   ```bash
+   python src/main_processor.py
+   ```
+
+3. **Check results** in the output_data directory
+   - Each processed invoice generates a corresponding JSON file
+   - Example: `invoice_Aaron Hawkins_6817.pdf` → `invoice_Aaron Hawkins_6817_extracted.json`
+
+## Configuration
+
+The system can be configured through config.py:
+
+- **MODEL_NAME**: Google Gemini model to use (default: "gemini-2.5-flash")
+- **INPUT_FOLDER**: Directory containing PDF invoices
+- **OUTPUT_FOLDER**: Directory for extracted JSON data
+- **data_extraction_prompt**: Custom prompt for the AI model
+
+## Data Schema
+
+The extracted invoice data follows the `InvoiceSchema` structure defined in schema.py:
+
+- **invoice_metadata**: Issue date, order ID, document type, description
+- **seller_details**: Seller name and information
+- **customer_details**: Billing and shipping information
+- **shipping_details**: Shipping method and costs
+- **financials**: Subtotal, discounts, totals, and line items
+- **additional_info**: Additional notes and terms
+
+## Key Components
+
+### `main_processor.py`
+Contains the core processing logic including:
+- `extract_data_from_pdf`: Processes individual PDF files
+- `main_async_processing`: Orchestrates parallel processing
+
+### `ai_client.py`
+Initializes the Google Gemini API `client` with proper authentication.
+
+### `schema.py`
+Defines Pydantic models for structured output:
+- `LineItem`: Individual invoice line items
+- `InvoiceMetadata`: Invoice header information
+- `SellerDetails`: Vendor information
+- `CustomerDetails`: Customer and shipping details
+- `ShippingDetails`: Shipping information
+- `Financials`: Financial totals and calculations
+- `AdditionalInfo`: Additional notes and terms
+
+## Example Output
+
+Processing `invoice_Aaron Hawkins_6817.pdf` generates structured JSON data like in [output_data/invoice_Aaron Hawkins_6817_extracted.json](output_data/invoice_Aaron Hawkins_6817_extracted.json), containing:
+
+```json
+{
+  "invoice_metadata": {
+    "issue_date": "2012-10-23",
+    "order_id": "MX-2012-AH1003051-41205",
+    "document_type": "INVOICE",
+    "description": "Invoice #6817 issued on 2012-10-23 to Aaron Hawkins..."
+  },
+  "seller_details": {
+    "name": "SuperStore"
+  },
+  "financials": {
+    "subtotal": 10604.00,
+    "shipping_total": 68.30,
+    "total_amount_due": 10672.30,
+    "line_items": [...]
+  }
+  // ... additional structured data
+}
+```
+
+## Performance
+
+The system processes invoices asynchronously, allowing multiple PDFs to be processed simultaneously. Processing time depends on:
+- Number of invoices
+- PDF complexity
+- API response times
+- System resources
+
+## Error Handling
+
+The system includes comprehensive error handling for:
+- Missing or invalid API keys
+- File I/O errors
+- API communication issues
+- Invalid PDF formats
+- Configuration errors
+
+All errors are logged with detailed messages for troubleshooting.
